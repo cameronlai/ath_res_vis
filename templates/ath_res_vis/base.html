@@ -1,0 +1,102 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Kranky' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/style.css" %}" />
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/moment.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/chart.min.js" %}"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row text-center">
+        <h1 class="handWritten">Athletic Results Visualization</h1>
+	<p class="handWritten handWrittenP">Visualizing Athletic Results over the past 5 years</p>
+      </div>
+      <hr>
+      <div class="row">
+	<form method="post" action="/" class="form-group" id="id_school_form">
+	      {% csrf_token %}
+	      {{ school_form }}
+	</form>
+      </div>
+      <hr>
+      <div class="row">
+	<!--
+	<canvas id="line-chart" width="800" height="450">
+	</canvas>
+	-->
+      </div>
+    </div>
+    <div class="row">
+      <table class="table table-bordered table-hover table-sm">
+	<thead>
+	  <tr>
+	    <th scope="col">Date</th>
+	    <th scope="col">Name</th>
+	    <th scope="col">Event</th>
+	    <th scope="col">Result</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  {% for entry in results %}
+	  <tr>
+	    <th scope="row">{{ entry.date|date:'Y-m-d' }}</td>
+	    <td>{{ entry.name }}</td>
+	    <td>{{ entry.event }}</td>
+	    <td>
+	    {% if entry.track %}
+	    {{ entry.result }}
+	    {% else %}
+	    {{ entry.result }}m
+	    {% endif %}
+	    </td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+      </table>
+</div>
+    <div class="row text-center">
+      <hr>
+      Data source from <a href="http://hkssf-hk.org.hk"> HKSSF </a>
+      <br><br> 
+      Designed by <a href="http://cameronlai.com"> Cameron Lai </a>
+      <hr>
+    </div>
+    </div>
+    <script type="text/javascript">
+      new Chart(document.getElementById("line-chart"), {
+      type: 'line',
+      data: {
+      labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+      datasets: [{ 
+      data: [86,114,106,106,107,111,133,221,783,2478],
+      label: "Africa",
+      borderColor: "#3e95cd",
+      fill: false
+      },
+      ]
+      },
+  options: {
+      title: {
+      display: true,
+      text: 'World population per region (in millions)'
+      },
+    pan: {
+      enabled: true,
+      },
+    zoom: {
+      enabled: true,
+      },
+    
+  }
+      });
+    </script>
+    <!--{% block javascript %}{% endblock %}-->
+     {% include "dropdown_list.html" %}
+  </body>
+</html>
+
