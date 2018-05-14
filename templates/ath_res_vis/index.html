@@ -18,17 +18,17 @@
       </div>
       <hr>
       <div class="row">
-	<form method="post" action="/" class="form-group" id="id_school_form">
-	      {% csrf_token %}
-	      {{ school_form }}
+	<form method="post" action="/" class="form-group" id="id_form">
+	  {% csrf_token %}
+	  {{ form }}
 	</form>
       </div>
       <hr>
       <div class="row">
 	<!--
-	<canvas id="line-chart" width="800" height="450">
-	</canvas>
-	-->
+	    <canvas id="line-chart" width="800" height="450">
+	    </canvas>
+	    -->
       </div>
     </div>
     <div class="row">
@@ -44,28 +44,27 @@
 	<tbody>
 	  {% for entry in results %}
 	  <tr>
-	    <th scope="row">{{ entry.date|date:'Y-m-d' }}</td>
+	    <th scope="row">{{ entry.date|date:'Y-m-d' }}</th>
 	    <td>{{ entry.name }}</td>
 	    <td>{{ entry.event }}</td>
 	    <td>
-	    {% if entry.track %}
-	    {{ entry.result }}
-	    {% else %}
-	    {{ entry.result }}m
-	    {% endif %}
+	      {% if entry.track %}
+	      {{ entry.result }}
+	      {% else %}
+	      {{ entry.result }}m
+	      {% endif %}
 	    </td>
 	  </tr>
 	  {% endfor %}
 	</tbody>
       </table>
-</div>
+    </div>
     <div class="row text-center">
       <hr>
       Data source from <a href="http://hkssf-hk.org.hk"> HKSSF </a>
       <br><br> 
       Designed by <a href="http://cameronlai.com"> Cameron Lai </a>
       <hr>
-    </div>
     </div>
     <script type="text/javascript">
       new Chart(document.getElementById("line-chart"), {
@@ -95,8 +94,34 @@
   }
       });
     </script>
-    <!--{% block javascript %}{% endblock %}-->
-     {% include "dropdown_list.html" %}
-  </body>
+    
+    <script>
+      $("#id_school_choice").change(function () {
+      var schoolname = $(this).val();
+      console.log(schoolname);
+      $.ajax({
+        url: '/ath_res_vis/ajax/get_school_info/',
+        data: {
+          'schoolname': schoolname
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data);
+          $('#id_name_choice').empty();
+          name_list = $.parseJSON(data['name_list']);
+          $.each(name_list, function(i, item) {
+            $('#id_name_choice').append($('<option></option>').val(i).html(item));
+          });
+
+          $('#id_sex_choice').empty();
+          sex_list = $.parseJSON(data['sex_list']);
+          $.each(sex_list, function(i, item) {
+            $('#id_sex_choice').append($('<option></option>').val(i).html(item));
+          });
+        }
+      });
+      })
+    </script>
+</body>
 </html>
 
