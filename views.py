@@ -12,62 +12,59 @@ import json
 # Create your views here.
 def index(request):
     indexContext = {}
-
-    # TODO: Review whether this kind of sorting method is the best thing to do
-    form = QueryForm()
+    form = QueryForm(request.GET or None)
     indexContext['form'] = form
 
-    """
-    if request.POST and request.method == 'POST':
-        print('In Post Method')
+    if request.GET and request.method == 'GET':
+        school_choice = request.GET.get('school_choice')
+        sex_choice = request.GET.get('sex_choice')
+        event_choice = request.GET.get('event_choice')
+        name_choice = request.GET.get('name_choice')
+        
+        print(name_choice, event_choice)
 
-        selected_school = request.POST.get('school_choice')
-        form.set_selected_school(selected_school)
+        results = AthResults.objects.filter(event=event_choice, name=name_choice)
+        indexContext['results'] = results
 
-        selected_name = request.POST.get('name_choice')
-        name_list = AthResults.objects.filter(school=selected_school).order_by('name')
-        name_list = name_list.values_list('name', flat=True).distinct()
-        form.set_name_choice(name_list, selected_name)
-
-        selected_event = request.POST.get('event_choice')ma manage.py shell
-      event_list = AthResults.objects.filter(name=selected_name).order_by('event')
-        event_list = event_list.values_list('event', flat=True).distinct()
-        form.set_event_choice(event_list, selected_event)
-
-        if selected_name != None and selected_event != None:
-            print(selected_name)
-            print(selected_event)
-            results = AthResults.objects.filter(name=selected_name, 
-                                                event=selected_event)
-    else:
-        print('do nothing')
-    """
-    indexContext['form'] = form
-    """
-    indexContext['school_form'] = school_form
-    indexContext['school_list'] =  school_list
-    indexContext['results'] = results
-    """      
     return render(request, 'ath_res_vis/index.html', indexContext)
 
 def get_school_info(request):
-    schoolname = request.GET.get('schoolname', None)
-    print(schoolname)
-    athlete_list = AthResults.objects.filter(school=schoolname).order_by('name')
-
-    if len(athlete_list) > 0:
-        name_list = athlete_list.values_list('name', flat=True).distinct()
-        sex_list = athlete_list.values_list('sex', flat=True).distinct()
-        sex_list = set(sex_list)
+    school_choice = request.GET.get('school_choice', None)
+    sex_choice = request.GET.get('sex_choice', None)
+    event_choice = request.GET.get('event_choice', None)
+    
+    if school_choice: # Valid school name
+        school_athlete_list = AthResults.objects.filter(school=school_choice).order_by('name')
     else:
-        sex_list = AthResults.objects.all().values_list('sex', flat=True).distinct()
-        
-    name_list = [name.encode('ascii') for name in name_list]
+        school_athlete_list = AthResults.objects.none()
+
+    sex_list = school_athlete_list.order_by('-sex').values_list('sex', flat=True).distinct()    
+    event_list = school_athlete_list.order_by('event').values_list('event', flat=True).distinct()
+
+    # Get back name list
+    if len(sex_list) > 0 and not sex_choice:
+        sex_choice = sex_list[0]
+
+    if len(event_list) > 0 and not event_choice:
+        event_choice = event_list[0]
+
+    if sex_choice and event_choice:
+        athlete_list = AthResults.objects.filter(school=school_choice, event=event_choice, sex=sex_choice).order_by('name')
+    else:
+        athlete_list = AthResults.objects.none()
+
+    sex_list = set(sex_list)
+    name_list = athlete_list.values_list('name', flat=True).distinct()
+
+    # Convert all lists to ASCII
     sex_list = [sex.encode('ascii') for sex in sex_list]
+    event_list = [event.encode('ascii') for event in event_list]
+    name_list = [name.encode('ascii') for name in name_list]
 
     data = {
-        'name_list': json.dumps(name_list),
         'sex_list': json.dumps(sex_list),
+        'event_list': json.dumps(event_list),
+        'name_list': json.dumps(name_list),
     }
     
     return JsonResponse(data)
