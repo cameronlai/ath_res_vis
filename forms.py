@@ -5,27 +5,13 @@ class QueryForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(QueryForm, self).__init__(*args, **kwargs)
 
-        school_list = AthResults.objects.order_by('school').values_list('school', flat=True).distinct()
+        # Get back choices
+        school_choice = AthResults.objects.order_by('school').values_list('school', flat=True).distinct()
+        sex_choice = AthResults.objects.values_list('sex', flat=True).distinct()
+        event_choice = AthResults.objects.order_by('event').values_list('event', flat=True).distinct()
     
-        self.fields['school_choice'] = forms.ModelChoiceField(queryset=school_list)
-        self.fields['sex_choice'] = forms.ModelChoiceField(queryset=AthResults.objects.none())
+        # Update form fields
+        self.fields['school_choice'] = forms.ModelChoiceField(queryset=school_choice)
+        self.fields['sex_choice'] = forms.ModelChoiceField(queryset=sex_choice)
         self.fields['name_choice'] = forms.ModelChoiceField(queryset=AthResults.objects.none())
-        self.fields['event_choice'] = forms.ModelChoiceField(queryset=AthResults.objects.none())
-
-    def set_name_choice(self, name_list, selected_name):
-        self.fields['name_choice'] = forms.ModelChoiceField(queryset=name_list)
-        self.initial['name_choice'] = selected_name
-
-    def set_event_choice(self, event_list, selected_event):
-        self.fields['event_choice'] = forms.ModelChoiceField(queryset=event_list)
-        self.initial['event_choice'] = selected_event
-
-    def set_selected_school(self, selected_school):
-        self.initial['school_choice'] = selected_school
-
-class SchoolForm(forms.Form):
-    def __init__(self, school_list, *args, **kwargs):
-        super(SchoolForm, self).__init__(*args, **kwargs)
-        self.fields['school_choice'] = forms.ModelChoiceField(queryset=school_list)
-
-    
+        self.fields['event_choice'] = forms.ModelChoiceField(queryset=event_choice)    

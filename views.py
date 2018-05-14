@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.template import Context, Template
 
 from models import AthResults
-from forms import QueryForm, SchoolForm
+from forms import QueryForm
 import json
 
 # Create your views here.
