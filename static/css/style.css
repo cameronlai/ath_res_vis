@@ -1,6 +1,4 @@
 body{
-    margin-left:10%;
-    margin-right:10%;
     font-family: 'Roboto', sans-serif;
     font-size: 20px;
 }
@@ -16,4 +14,9 @@ label{
 
 select{
     margin: 2px;
+}
+
+.center_div{
+    margin: 0 auto;
+    width:80% /* value of your choice which suits your alignment */
 }
