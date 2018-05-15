@@ -35,7 +35,7 @@ def index(request):
     indexContext['form'] = form
     return render(request, 'ath_res_vis/index.html', indexContext)
 
-def get_school_info(request):
+def get_info(request):
     school_choice = request.GET.get('school_choice', None)
     sex_choice = request.GET.get('sex_choice', None)
     event_choice = request.GET.get('event_choice', None)
