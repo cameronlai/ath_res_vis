@@ -12,8 +12,6 @@ import json
 # Create your views here.
 def index(request):
     indexContext = {}
-    form = QueryForm(request.GET or None)
-    indexContext['form'] = form
 
     if request.GET and request.method == 'GET':
         school_choice = request.GET.get('school_choice')
@@ -21,11 +19,20 @@ def index(request):
         event_choice = request.GET.get('event_choice')
         name_choice = request.GET.get('name_choice')
         
-        print(name_choice, event_choice)
-
+        # Get results
         results = AthResults.objects.filter(event=event_choice, name=name_choice)
         indexContext['results'] = results
 
+        # Prepare form again
+        form = QueryForm(initial={'school_choice': school_choice,
+                                  'sex_choice': sex_choice,
+                                  'event_choice': event_choice,
+                                  'name_choice': name_choice,
+                                  })        
+    else:
+        form = QueryForm(initial={'school_choice': None})
+        
+    indexContext['form'] = form
     return render(request, 'ath_res_vis/index.html', indexContext)
 
 def get_school_info(request):
