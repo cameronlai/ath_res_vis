@@ -13,3 +13,30 @@ class AthResults(models.Model):
     class Meta:
         managed = False
         db_table = 'ath_results'
+
+    def get_list(self, school_choice, sex_choice, event_choice):
+        if school_choice: # Valid school name
+            school_athlete_list = self.objects.filter(school=school_choice).order_by('name')
+        else:
+            school_athlete_list = self.objects.none()
+
+        sex_list = school_athlete_list.order_by('-sex').values_list('sex', flat=True).distinct()    
+        event_list = school_athlete_list.order_by('event').values_list('event', flat=True).distinct()
+
+        # Get back name list
+        if len(sex_list) > 0 and not sex_choice in sex_list:
+            sex_choice = sex_list[0]
+
+        if len(event_list) > 0 and not event_choice in event_list:
+            event_choice = event_list[0]
+
+        if sex_choice and event_choice:
+            athlete_list = self.objects.filter(school=school_choice, event=event_choice, sex=sex_choice).order_by('name')
+        else:
+            athlete_list = self.objects.none()
+
+        name_list = athlete_list.values_list('name', flat=True).distinct()
+
+        return sex_list, event_list, name_list
+        
+
