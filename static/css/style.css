@@ -1,10 +1,19 @@
 body{
-    margin-top:5%;
     margin-left:10%;
     margin-right:10%;
-    font-family: 'Audiowide', cursive;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
 }
 
 h1{
-    font-size: 40px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 80px;
+}
+
+label{
+    margin: 2px;
+}
+
+select{
+    margin: 2px;
 }
