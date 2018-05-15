@@ -49,10 +49,10 @@ def get_school_info(request):
     event_list = school_athlete_list.order_by('event').values_list('event', flat=True).distinct()
 
     # Get back name list
-    if len(sex_list) > 0 and not sex_choice:
+    if len(sex_list) > 0 and not sex_choice in sex_list:
         sex_choice = sex_list[0]
 
-    if len(event_list) > 0 and not event_choice:
+    if len(event_list) > 0 and not event_choice in event_list:
         event_choice = event_list[0]
 
     if sex_choice and event_choice:

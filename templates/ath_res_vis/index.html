@@ -99,13 +99,8 @@
     <script>
       var ajax_response = function() {
         var school_choice = $("#id_school_choice").val();
-        console.log(school_choice);
-
         var sex_choice = $("#id_sex_choice").val();
-        console.log(sex_choice);
-
         var event_choice = $("#id_event_choice").val();
-        console.log(event_choice);
         
         $.ajax({
           url: '/ath_res_vis/ajax/get_school_info/',
@@ -116,7 +111,6 @@
           },
           dataType: 'json',
           success: function (data) {
-            console.log(data);
             $('#id_name_choice').empty();
             name_list = $.parseJSON(data['name_list']);
             $.each(name_list, function(i, item) {
@@ -128,16 +122,16 @@
             $.each(sex_list, function(i, item) {
               $('#id_sex_choice').append($('<option></option>').val(item).html(item)); 
             });
-            if (sex_choice) {
+            if (sex_choice && $.inArray(sex_choice, sex_list) >= 0) {
               $("#id_sex_choice").val(sex_choice);
             }
 
             $('#id_event_choice').empty();
-            sex_list = $.parseJSON(data['event_list']);
-            $.each(sex_list, function(i, item) {
+            event_list = $.parseJSON(data['event_list']);
+            $.each(event_list, function(i, item) {
               $('#id_event_choice').append($('<option></option>').val(item).html(item)); 
             });
-            if (event_choice) {
+            if (event_choice && $.inArray(event_choice, event_list) >= 0) {
               $("#id_event_choice").val(event_choice);
             }
           }
