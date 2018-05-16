@@ -27,20 +27,32 @@ def index(request):
             name=name_choice)
         indexContext['results'] = results
 
-        # Prepare form again
+        # Prepare data
+        plot_x = [res.date.strftime('%Y-%m-%d') for res in results]
+        plot_y = [res.result for res in results]
+
+        # Prepare form
         form = QueryForm(initial={'school_choice': school_choice,
                                   'sex_choice': sex_choice,
                                   'event_choice': event_choice,
                                   'name_choice': name_choice,
                                   })        
     else:
+        # Prepare data
+        plot_x = []
+        plot_y = []
+
+        # Prepare form
         form = QueryForm(initial={'school_choice': None,
                                   'sex_choice': None,
                                   'event_choice': None,
                                   'name_choice': None,
                                   })
         
+    indexContext['plot_x'] =  json.dumps(plot_x)
+    indexContext['plot_y'] =  json.dumps(plot_y)
     indexContext['form'] = form
+
     return render(request, 'ath_res_vis/index.html', indexContext)
 
 def get_info(request):
