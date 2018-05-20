@@ -1,7 +1,4 @@
 var plot_data = function(ctx, is_track, plot_x, plot_y) {
-  console.log(plot_x);
-  console.log(plot_y);
-
   chart_type = 'bar';
   if (plot_x.length == 0) {
     return;
@@ -29,7 +26,6 @@ var plot_data = function(ctx, is_track, plot_x, plot_y) {
 	  {
 	    ticks: {
 	      callback: function(label){
-		console.log(label);
 		var unit = 'm';
 		var ret = label.toString();
 		if (is_track) {
