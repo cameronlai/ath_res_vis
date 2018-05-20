@@ -28,6 +28,10 @@ def index(request):
         indexContext['results'] = results
 
         # Prepare data
+        if len(results) > 0:
+            is_track = results[0].track
+        else:
+            is_track = False
         plot_x = [res.date.strftime('%Y-%m-%d') for res in results]
         plot_y = [res.result for res in results]
 
@@ -39,6 +43,7 @@ def index(request):
                                   })        
     else:
         # Prepare data
+        is_track = False
         plot_x = []
         plot_y = []
 
@@ -49,6 +54,7 @@ def index(request):
                                   'name_choice': None,
                                   })
         
+    indexContext['is_track'] = json.dumps(is_track)
     indexContext['plot_x'] =  json.dumps(plot_x)
     indexContext['plot_y'] =  json.dumps(plot_y)
     indexContext['form'] = form
