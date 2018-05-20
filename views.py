@@ -29,7 +29,7 @@ def index(request):
 
         # Prepare data
         if len(results) > 0:
-            is_track = results[0].track
+            is_track = results[0].is_track
         else:
             is_track = False
         plot_x = [res.date.strftime('%Y-%m-%d') for res in results]

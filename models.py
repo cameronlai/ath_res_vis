@@ -1,20 +1,18 @@
 from django.db import models
 import time
 
-
-
 class AthResults(models.Model):
-    id = models.IntegerField(primary_key=True, blank=True)  # AutoField?
-    name = models.TextField(db_column='Name', blank=True)  # Field name made lowercase.
-    school = models.TextField(db_column='School', blank=True)  # Field name made lowercase.
-    event = models.TextField(db_column='Event', blank=True)  # Field name made lowercase.
-    sex = models.TextField(db_column='Sex', blank=True)  # Field name made lowercase.
-    result = models.FloatField(db_column='Result', blank=True, null=True)  # Field name made lowercase.
-    date = models.TextField(db_column='Date', blank=True)  # Field name made lowercase. This field type is a guess.
-    track = models.IntegerField(db_column='Track', blank=True, null=True)  # Field name made lowercase.
+    id = models.IntegerField(primary_key=True, blank=True)
+    name = models.TextField(db_column='Name', blank=True)
+    school = models.TextField(db_column='School', blank=True)
+    event = models.TextField(db_column='Event', blank=True)
+    sex = models.TextField(db_column='Sex', blank=True)
+    result = models.FloatField(db_column='Result', blank=True, null=True)
+    date = models.TextField(db_column='Date', blank=True)
+    is_track = models.IntegerField(db_column='IsTrack', blank=True, null=True)
 
     def display_result(self):
-        if self.track:
+        if self.is_track:
             m, s = divmod(self.result, 60)
             h, m = divmod(m, 60)
             if h > 0:
