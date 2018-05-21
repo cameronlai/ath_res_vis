@@ -4,7 +4,7 @@
    var event_choice = $("#id_event_choice").val();
 
    $.ajax({
-     url: '/ath_res_vis/ajax/get_info/',
+     url: '/ajax/get_info/',
      data: {
        'school_choice': school_choice,
        'sex_choice': sex_choice,

@@ -47,10 +47,11 @@ It uses chart.js as the javascript plotting tool.
 
 6. Dump athletics results data into Database
 
-   - The data used are in PDF formats. They are first converted text files and then parsed into the correct format.
-   - Data can be found from this link. 
-   - http://www.hkssf-hk.org.hk/hk/sec/events/ath.htm
-   - You may write your own parser and reuse the web visualization part for other data formats.
+   - The data used are in PDF formats and they are copied into text files.
+   - process_data.py parses the data into a sqlite database format.
+   - export_sql.py copies the data from one database file to another.
+   - Data can be found from this [link](http://www.hkssf-hk.org.hk/hk/sec/events/ath.htm).
+   - You may write your own parser and reuse the web visualization part for other data.
 
 ## Running Django app
 
