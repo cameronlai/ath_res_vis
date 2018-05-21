@@ -15,53 +15,59 @@
   <body>
     <div class="container">
       <div class="row text-center">
+        <h1>Athletics Results Visualization</h1>
+      </div>
+      <hr>
+      <div class="row">
+	<div class="col-sm-2">
+	</div>
+	<div class="col-sm-8">
+	  <form method="get" action="/" class="form-group" id="id_form">
+	    {{ form }}
+	    <button class="btn btn-primary" type="submit">Query</button>
+	  </form>
+	</div>
+	<div class="col-sm-2">
+	</div>
+      </div>
+      <hr>
+      <div class="row">
+	<div class ="col-md-6 col-sm-6">      
+	  <canvas id="myChart" width="300" height="150"></canvas>
+	</div>
+	<div class ="col-md-6 col-sm-6">
+	  <table class="table table-bordered table-hover table-sm">
+	    <thead>
+	      <tr>
+		<th scope="col">Date</th>
+		<th scope="col">Name</th>
+		<th scope="col">Event</th>
+		<th scope="col">Result</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	    {% for entry in results %}
+	    <tr>
+	      <th scope="row">{{ entry.date|date:'Y-m-d' }}</th>
+	      <td>{{ entry.name }}</td>
+	      <td>{{ entry.event }}</td>
+	      <td>
+		{{ entry.display_result }} 
+	      </td>
+	    </tr>
+	    {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+      </div>
+      <div class="row text-center">
 	<hr>
-        <h1>Athletic Results Visualization</h1>
+	{{ data }}
+	Data source from <a href="http://hkssf-hk.org.hk"> HKSSF </a>
 	<hr>
+	Designed by <a href="http://cameronlai.com"> Cameron Lai </a>
+      <hr>
       </div>
-      <div class="row center_div">
-	<form method="get" action="/" class="form-group" id="id_form">
-	  {% csrf_token %}
-	  {{ form }}
-	  <button class="btn btn-primary" type="submit">Query</button>
-	</form>
-      </div>
-      <hr>
-      <div class="row center_div">
-	<canvas id="myChart" width="300" height="100"></canvas>
-      </div>
-    </div>
-    <div class="row center_div">
-      <table class="table table-bordered table-hover table-sm">
-	<thead>
-	  <tr>
-	    <th scope="col">Date</th>
-	    <th scope="col">Name</th>
-	    <th scope="col">Event</th>
-	    <th scope="col">Result</th>
-	  </tr>
-	</thead>
-	<tbody>
-	  {% for entry in results %}
-	  <tr>
-	    <th scope="row">{{ entry.date|date:'Y-m-d' }}</th>
-	    <td>{{ entry.name }}</td>
-	    <td>{{ entry.event }}</td>
-	    <td>
-	      {{ entry.display_result }} 
-	    </td>
-	  </tr>
-	  {% endfor %}
-	</tbody>
-      </table>
-    </div>
-    <div class="row text-center">
-      <hr>
-      {{ data }}
-      Data source from <a href="http://hkssf-hk.org.hk"> HKSSF </a>
-      <hr>
-      Designed by <a href="http://cameronlai.com"> Cameron Lai </a>
-      <hr>
     </div>
     <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
     <script type="text/javascript" src="{% static "js/plot.js" %}"></script>
@@ -72,6 +78,6 @@
       plot_y = {{ plot_y|safe }};
       plot_data(ctx, is_track, plot_x, plot_y);
     </script>
-</body>
+  </body>
 </html>
 
