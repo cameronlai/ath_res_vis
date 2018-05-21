@@ -1,7 +1,7 @@
 # Athletics Results Visualization
 
 Athletics Results Visualization is a Django app built to visualize athletics results of individual athletes
-It curretnly uses data from the [HKSSF]{http://www.hkssf-hk.org.hk/} website.
+It curretnly uses data from the [HKSSF](http://www.hkssf-hk.org.hk/) website.
 It uses chart.js as the javascript plotting tool.
 
 ## Set up
@@ -48,7 +48,8 @@ It uses chart.js as the javascript plotting tool.
 6. Dump athletics results data into Database
 
    - The data used are in PDF formats. They are first converted text files and then parsed into the correct format.
-   - Data can be found from this link. http://www.hkssf-hk.org.hk/hk/sec/events/ath.htm
+   - Data can be found from this link. 
+   - http://www.hkssf-hk.org.hk/hk/sec/events/ath.htm
    - You may write your own parser and reuse the web visualization part for other data formats.
 
 ## Running Django app
@@ -64,15 +65,16 @@ It uses chart.js as the javascript plotting tool.
 ## Database format
 
    The database is in the following format as in models.py
-   | Field Name | Description						|
-   | ---------- | ---------------------------------			|
-   | Name	| Name of the athelete					|
-   | School	| Name of the school the athlete is representing 	|
-   | Event	| Name of the event the athelete completed (e.g. 100m)	|
-   | Sex	| Sex of the atehlete					|
-   | Result	| Results of the athelete (either in seconds or meteres)|
-   | Date	| Date of the event completion				|
-   | IsTrack	| True = Track event, False = field event		|
+   
+Field Name | Description
+------------ | -------------
+Name	| Name of the athelete
+School	| Name of the school the athlete is representing
+Event	| Name of the event the athelete completed (e.g. 100m)
+Sex	| Sex of the atehlete
+Result	| Results of the athelete (either in seconds or meteres)
+Date	| Date of the event completion
+IsTrack	| True = Track event, False = field event
 
 ## Dependencies
 
